@@ -17,7 +17,8 @@ def get_bert_embedding(text):
 # -----------------------------------------------------------------------------------
 
 # Load parsed dataset
-df = pd.read_parquet(parsed_xml_cpc_path)
+# df = pd.read_pickle(parsed_xml_cpc_path)
+df = pd.read_pickle(preprocessed_df_path)
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 model = BertModel.from_pretrained('bert-base-uncased')
@@ -26,5 +27,5 @@ model.eval()  # Set the model to evaluation mode
 # Stores the embeddings as lists of floats in a new column
 df['bert_embeddings'] = df['CTB'].apply(lambda x: get_bert_embedding(x).tolist()[0])
 
-df.to_excel(workflow_folder + r'\excel\bert_embeddings.xlsx')
-df.to_parquet(workflow_folder + r'\parquet\bert_embeddings.parquet')
+df.to_excel(workflow_folder + r'\excel\bert_embeddings.xlsx', index=False)
+df.to_pickle(workflow_folder + r'\pickle\bert_embeddings.pickle')
